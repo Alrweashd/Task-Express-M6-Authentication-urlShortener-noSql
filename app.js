@@ -9,9 +9,12 @@ app.use(morgan("dev"));
 //for auth login
 const passport = require("passport");
 app.use(passport.initialize());
-const { localStrategy } = require("./middlewares/passport");
+//different strategies, one for users and the other for urls, allowing only the authorized user to modify.
+const { localStrategy, jwtStrategy } = require("./middlewares/passport");
 passport.use(localStrategy);
+passport.use(jwtStrategy);
 connectDb();
+
 app.use(express.json());
 
 app.use("/urls", urlRoutes);

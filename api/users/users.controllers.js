@@ -2,15 +2,16 @@ const User = require("../../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const hashedPassword = async (password) => {
-  const saltRounds = 10;
-  const hashPassword = await bcrypt.hash(password, saltRounds);
-  return hashPassword;
-};
+const hashedPassword = require("../../utils/auth/hashingPassword");
+// const  = async (password) => {
+//   const saltRounds = 10;
+//   const hashPassword = await bcrypt.hash(password, saltRounds);
+//   return hashPassword;
+// };
 
 const generateToken = (user) => {
   const payload = {
-    id: user._id,
+    _id: user._id,
     username: user.username,
   };
   const secret = process.env.JWT_SECRET;
@@ -21,6 +22,7 @@ const generateToken = (user) => {
 
 exports.signin = async (req, res) => {
   try {
+    // req.use from passport
     const token = generateToken(req.user);
     res.status(201).json({ token });
   } catch (err) {
